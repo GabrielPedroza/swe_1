@@ -100,22 +100,14 @@ const BookDetails = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 p-4">
-      {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-semibold text-gray-800">Book Details</h1>
-        <Button
-          onClick={() => signOut({ callbackUrl: "/signin" })}
-          className="bg-red-600 hover:bg-red-700"
-        >
-          Logout
-        </Button>
-      </div>
-
       {/* Back to Dashboard Link */}
-      <div className="mb-4">
-        <Link className="text-blue-600 hover:underline" href="/dashboard">
-          Back to Dashboard
-        </Link>
+      <div className="mb-4 flex items-center justify-between">
+        <Button
+          onClick={() => router.push("/dashboard")}
+          className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
+        >
+          &larr; Back to Dashboard
+        </Button>
       </div>
 
       {/* Book Details */}

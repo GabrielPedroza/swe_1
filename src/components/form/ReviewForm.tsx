@@ -1,7 +1,7 @@
 // components/ReviewForm.tsx
 import { Rating } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button from "~/components/Button";
 import { api } from "~/utils/api";
@@ -41,23 +41,30 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   };
 
   const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-  const [userHasRating, setUserHasRating] = useState<Rating | null>(null);
-  console.log("rating:", userHasRating);
+  // Correctly use the useQuery hook at the top level
+  const {
+    data: userHasRating,
+    isLoading,
+    isError,
+  } = api.rating.getRating.useQuery(
+    {
+      bookId,
+      userId: userId ?? "",
+    },
+    {
+      enabled: !!userId, // Only run the query if userId exists
+    },
+  );
 
-  useEffect(() => {
-    const getRating = async () => {
-      if (session && session.user) {
-        const { data: rating } = api.rating.getRating.useQuery({
-          bookId: bookId,
-          userId: session.user.id,
-        });
-        if (rating) {
-          setUserHasRating(rating);
-        }
-      }
-    };
-  }, []);
+  if (isLoading) {
+    return <p>Loading your rating...</p>;
+  }
+
+  if (isError) {
+    return <p>Error loading your rating. Please try again later.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">

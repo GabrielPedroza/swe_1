@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { db } from "~/server/db";
 
 export const booksRouter = createTRPCRouter({
   // Endpoint to fetch paginated and filtered books
@@ -75,7 +76,7 @@ export const booksRouter = createTRPCRouter({
 
         if (tags && tags.length > 0) {
           where.tags = {
-            hasSome: tags,
+            hasEvery: tags,
           };
         }
       }

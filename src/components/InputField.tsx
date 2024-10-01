@@ -31,7 +31,9 @@ const InputField = ({
         return value.split(",").map((tag) => tag.trim());
       },
     };
-  } else if (type === "number") {
+  }
+
+  if (type === "number") {
     // Handle number inputs: return undefined if empty or invalid
     registerOptions = {
       setValueAs: (value: string) => {
@@ -44,7 +46,7 @@ const InputField = ({
     // Handle date inputs: return undefined if empty
     registerOptions = {
       setValueAs: (value: string) => {
-        return value === "" ? undefined : value;
+        return value === "" ? undefined : new Date(value);
       },
     };
   }

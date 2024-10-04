@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   const books = [
     {
-      id:"1",
+      id: "1",
       title: "The Great Gatsby",
       author: "F. Scott Fitzgerald",
       genre: "Fiction",
@@ -253,7 +253,7 @@ async function main() {
       id: "142547",
       username: "janeDoe",
       email: "janedoe@gmail.com",
-      emailVerified: "2024-01-01",
+      emailVerified: new Date("2024-01-01"),
       password: "5GjBCQ6",
       image: "profilepic",
     },
@@ -261,7 +261,7 @@ async function main() {
       id: "253281",
       username: "johnDoe",
       email: "johndoe@gmail.com",
-      emailVerified: "2024-06-05",
+      emailVerified: new Date("2024-06-05"),
       password: "6VGh62",
       image: "profilepic2",
     },
@@ -269,7 +269,7 @@ async function main() {
       id: "836273",
       username: "jamesRobert",
       email: "jamesrobert@gmail.com",
-      emailVerified: "2024-05-03",
+      emailVerified: new Date("2024-05-03"),
       password: "8d34Jh",
       image: "profilepic3",
     },
@@ -282,7 +282,7 @@ async function main() {
       userId: "142547",
       content: "Amazing read.",
       score: 4.00,
-      reviewDate: "2024-01-07",
+      reviewDate: new Date("2024-01-07"),
     },
     {
       id: "162742",
@@ -290,7 +290,7 @@ async function main() {
       userId: "253281",
       content: "Thrilling and entertaining.",
       score: 3.00,
-      reviewDate: "2024-03-15",
+      reviewDate: new Date("2024-03-15"),
     },
     {
       id: "911893",
@@ -298,7 +298,7 @@ async function main() {
       userId: "836273",
       content: "Well written and thought provoking.",
       score: 4.00,
-      reviewDate: "2024-04-17",
+      reviewDate: new Date("2024-04-17"),
     },
   ];
 
@@ -327,20 +327,20 @@ async function main() {
     {
       id: "73816",
       userId: "142547",
-      createdAt: "2024-01-09",
-      updatedAt: "2024-01-10",
+      createdAt: new Date("2024-01-09"),
+      updatedAt: new Date("2024-01-10"),
     },
     {
       id: "452614",
       userId: "253281",
-      createdAt: "2024-01-09",
-      updatedAt: "2024-01-10",
+      createdAt: new Date("2024-01-09"),
+      updatedAt: new Date("2024-01-10"),
     },
     {
       id: "693165",
       userId: "836273",
-      createdAt: "2024-01-09",
-      updatedAt: "2024-01-10",
+      createdAt: new Date("2024-01-09"),
+      updatedAt: new Date("2024-01-10"),
     },
   ];
   const cartItems = [
@@ -349,21 +349,21 @@ async function main() {
       cartId: "198392",
       bookId: "347",
       quantity: 1,
-      addedAt: "2024-08-09",
+      addedAt: new Date("2024-08-09"),
     },
     {
       id: "387104",
       cartId: "729184",
       bookId: "347",
       quantity: 2,
-      addedAt: "2024-08-12",
+      addedAt: new Date("2024-08-12"),
     },
     {
       id: "013625",
       cartId: "812642",
       bookId: "347",
       quantity: 3,
-      addedAt: "2024-08-15",
+      addedAt: new Date("2024-08-15"),
     },
   ];
   const creditCards = [
@@ -373,9 +373,9 @@ async function main() {
       userId: "142547",
       cardNumber: "1636 9493 3915 1732",
       cardHolderName: "Jane Doe",
-      expirationDate: "2026-01-12",
-      createdAt: "2024-09-03",
-      updatedAt: "2024-09-03",
+      expirationDate: new Date("2026-01-12"),
+      createdAt: new Date("2024-09-03"),
+      updatedAt: new Date("2024-09-03"),
     },
     {
       id: "981363",
@@ -383,9 +383,9 @@ async function main() {
       userId: "253281",
       cardNumber: "1103 3782 8391 8451",
       cardHolderName: "John Doe",
-      expirationDate: "2027-05-03",
-      createdAt: "2024-09-04",
-      updatedAt: "2024-09-04",
+      expirationDate: new Date("2027-05-03"),
+      createdAt: new Date("2024-09-04"),
+      updatedAt: new Date("2024-09-04"),
     },
     {
       id: "686424",
@@ -393,9 +393,9 @@ async function main() {
       userId: "836273",
       cardNumber: "1028 5628 8969 1423",
       cardHolderName: "James Robert",
-      expirationDate: "2027-06-17",
-      createdAt: "2024-09-05",
-      updatedAt: "2024-09-05",
+      expirationDate: new Date("2027-06-17"),
+      createdAt: new Date("2024-09-05"),
+      updatedAt: new Date("2024-09-05"),
     },
   ];
 
@@ -414,7 +414,7 @@ async function main() {
   console.log("Inserted 3 users successfully.");
 
   await prisma.review.createMany({
-    data:reviews,
+    data: reviews,
     skipDuplicates: true, // Optional: skips inserting records that would violate unique contraints
   });
   console.log("Inserted 3 reviews successfully.");

@@ -278,7 +278,7 @@ async function main() {
   const reviews = [
     {
       id: "617541",
-      bookId: "347",
+      bookId: "1",
       userId: "142547",
       content: "Amazing read.",
       score: 4.00,
@@ -286,38 +286,38 @@ async function main() {
     },
     {
       id: "162742",
-      bookId: "236",
+      bookId: "2",
       userId: "253281",
       content: "Thrilling and entertaining.",
       score: 3.00,
-      reviewDate: new Date("2024-03-15"),
+      reviewDate: new Date("2024-06-10"),
     },
     {
       id: "911893",
-      bookId: "465",
+      bookId: "3",
       userId: "836273",
       content: "Well written and thought provoking.",
       score: 4.00,
-      reviewDate: new Date("2024-04-17"),
+      reviewDate: new Date("2024-05-17"),
     },
   ];
 
   const ratings = [
     {
-      id: "167234",
-      bookId: "347",
-      userId: "617541",
+      id: "617541",
+      bookId: "1",
+      userId: "142547",
       score: 4.00,
     },
     {
-      id: "178109",
-      bookId: "236",
+      id: "162742",
+      bookId: "2",
       userId: "253281",
       score: 5.00,
     },
     {
-      id: "102346",
-      bookId: "465",
+      id: "911893",
+      bookId: "3",
       userId: "836273",
       score: 3.00,
     },
@@ -325,7 +325,7 @@ async function main() {
 
   const shoppingCarts = [
     {
-      id: "73816",
+      id: "738169",
       userId: "142547",
       createdAt: new Date("2024-01-09"),
       updatedAt: new Date("2024-01-10"),
@@ -346,22 +346,22 @@ async function main() {
   const cartItems = [
     {
       id: "153824",
-      cartId: "198392",
-      bookId: "347",
+      cartId: "738169",
+      bookId: "1",
       quantity: 1,
       addedAt: new Date("2024-08-09"),
     },
     {
       id: "387104",
-      cartId: "729184",
-      bookId: "347",
+      cartId: "452614",
+      bookId: "2",
       quantity: 2,
       addedAt: new Date("2024-08-12"),
     },
     {
       id: "013625",
-      cartId: "812642",
-      bookId: "347",
+      cartId: "693165",
+      bookId: "3",
       quantity: 3,
       addedAt: new Date("2024-08-15"),
     },

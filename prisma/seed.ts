@@ -273,7 +273,7 @@ async function main() {
       password: "8d34Jh",
       image: "profilepic3",
     },
-  ];
+];
 
   const reviews = [
     {
@@ -369,9 +369,9 @@ async function main() {
   const creditCards = [
     {
       id: "686424",
-      user: "janeDoe",
+      //user: "janeDoe",
       userId: "142547",
-      cardNumber: "1636 9493 3915 1732",
+      cardNumber: "1636949339151732",
       cardHolderName: "Jane Doe",
       expirationDate: new Date("2026-01-12"),
       createdAt: new Date("2024-09-03"),
@@ -379,19 +379,19 @@ async function main() {
     },
     {
       id: "981363",
-      user: "johnDoe",
+      //user: "johnDoe",
       userId: "253281",
-      cardNumber: "1103 3782 8391 8451",
+      cardNumber: "1103378283918451",
       cardHolderName: "John Doe",
       expirationDate: new Date("2027-05-03"),
       createdAt: new Date("2024-09-04"),
       updatedAt: new Date("2024-09-04"),
     },
     {
-      id: "686424",
-      user: "janeDoe",
+      id: "472461",
+      //user: "janeDoe",
       userId: "836273",
-      cardNumber: "1028 5628 8969 1423",
+      cardNumber: "1028562889691423",
       cardHolderName: "James Robert",
       expirationDate: new Date("2027-06-17"),
       createdAt: new Date("2024-09-05"),

@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+await prisma.rating.deleteMany({});
 
 async function main() {
   const books = [
@@ -308,18 +309,21 @@ async function main() {
       bookId: "1",
       userId: "142547",
       score: 4.00,
+      ratingDate: new Date("2024-01-08"),
     },
     {
       id: "162742",
       bookId: "2",
       userId: "253281",
       score: 5.00,
+      ratingDate: new Date("2024-06-11"),
     },
     {
       id: "911893",
       bookId: "3",
       userId: "836273",
       score: 3.00,
+      ratingDate: new Date("2024-05-18"),
     },
   ];
 
@@ -369,7 +373,6 @@ async function main() {
   const creditCards = [
     {
       id: "686424",
-      //user: "janeDoe",
       userId: "142547",
       cardNumber: "1636949339151732",
       cardHolderName: "Jane Doe",
@@ -379,7 +382,6 @@ async function main() {
     },
     {
       id: "981363",
-      //user: "johnDoe",
       userId: "253281",
       cardNumber: "1103378283918451",
       cardHolderName: "John Doe",
@@ -389,7 +391,6 @@ async function main() {
     },
     {
       id: "472461",
-      //user: "janeDoe",
       userId: "836273",
       cardNumber: "1028562889691423",
       cardHolderName: "James Robert",

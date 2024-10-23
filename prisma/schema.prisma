@@ -109,3 +109,4 @@ model CreditCard {
   expirationDate DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}

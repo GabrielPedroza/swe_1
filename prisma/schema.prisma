@@ -31,7 +31,6 @@ model Book {
   title       String
   author      String
   genre       String
-  copies      Int
   price       Float
   publishedAt DateTime
   tags        String[]

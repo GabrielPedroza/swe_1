@@ -13,7 +13,7 @@ import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/auth";
+import { getServerAuthSession } from "~/server/common/get-server-auth-session";
 import { db } from "~/server/db";
 
 /**
@@ -26,6 +26,7 @@ import { db } from "~/server/db";
 
 interface CreateContextOptions {
   session: Session | null;
+  db: typeof db;
 }
 
 /**
@@ -41,7 +42,7 @@ interface CreateContextOptions {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    db,
+    db: opts.db,
   };
 };
 
@@ -59,6 +60,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    db,
   });
 };
 

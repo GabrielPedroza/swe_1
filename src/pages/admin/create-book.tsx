@@ -15,7 +15,7 @@ const CreateBookPage = () => {
   
     const createBook = api.book.createBook.useMutation({
       onSuccess: () => {
-        router.push('/admin'); // Redirect on success
+        router.push('/admin'); 
       },
       onError: (error) => {
         setError(error.message);
@@ -37,7 +37,7 @@ const CreateBookPage = () => {
         return;
       }
   
-      createBook.mutate({ title, author, description, genre, price: Number(price), publishedAt });
+      // FIXME: createBook.mutate({ title, author, description, genre, price: Number(price), publishedAt });
     };
   
    // return ();

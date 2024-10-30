@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { array, string, z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const booksRouter = createTRPCRouter({
@@ -14,8 +14,7 @@ export const booksRouter = createTRPCRouter({
             genre: z.string().optional(),
             priceMin: z.number().optional(),
             priceMax: z.number().optional(),
-            publishedAfter: z.date().optional(),
-            publishedBefore: z.date().optional(),
+            publishedAt: z.date().optional(),
             tags: z.array(z.string()).optional(),
           })
           .optional(),
@@ -56,5 +55,32 @@ export const booksRouter = createTRPCRouter({
       }
 
       return book;
+    }),
+
+  createBook: protectedProcedure
+    .input(
+      z.object({
+        title: z.string().min(1, "Title is required"),
+        author: z.string().min(1, "Author is required"),
+        genre: z.string().min(1, "Genre is required"),
+        description: z.string().min(1, "Description is required"),
+        price: z.number().min(1, "Price is required"),
+        tags: array(z.string()).optional(),
+        publishedAt: z.date()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const newBook = await ctx.db.book.create({
+        data: {
+          title: input.title,
+          author: input.author,
+          genre: input.genre,
+          description: input.description,
+          price: input.price,
+          tags: input.tags,
+          publishedAt: input.publishedAt ?? undefined,
+        },
+      });
+      return newBook;
     }),
 });

@@ -33,8 +33,9 @@ model Book {
   author      String
   genre       String
   price       Float
-  publishedAt DateTime
+  publishedAt DateTime?
   tags        String[]
+  description String
 
   // Relations
   reviews     Review[]   @relation("BookReviews")

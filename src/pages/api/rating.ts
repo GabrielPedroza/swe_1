@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try{
       console.log("Recevied", {rating, userId, bookId});
       const userFound = await prisma.user.findUnique({
-        where: {id: userId },
+              where: {id: userId},
       });
       let newRating;
       newRating = await prisma.rating.create({
@@ -25,6 +25,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ratingDate: new Date(),
         },
       });
+      let averageRating;
+      averageRating = await prisma.rating.aggregate({
+        where: {bookId},
+        _avg: {score: true},
+      });
 
 
 
@@ -34,7 +39,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error(error);
     return res.status(500).json({ error: "Couldn't post rating."});
   }
-} else {
+} 
+
+else if (req.method === "GET") {
+  const {bookId} = req.query;
+  
+  
+  try{
+    console.log("Recevied", {bookId});
+    let averageRating;
+    averageRating = await prisma.rating.aggregate({
+      where: {bookId: String(bookId)},
+      _avg: {score: true},
+    });
+    const truncateAvg = Math.floor((averageRating._avg.score || 0)*100)/100;
+
+
+  
+  
+  return res.status(202).json(truncateAvg);
+} catch (error) {
+  console.error(error);
+  return res.status(500).json({ error: "Couldn't get average rating."});
+}
+} 
+
+else {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ error: "Method ${req.method} Not Allowed" });
   }

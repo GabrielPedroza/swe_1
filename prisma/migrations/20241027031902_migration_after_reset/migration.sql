@@ -16,10 +16,10 @@ CREATE TABLE "Book" (
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
     "genre" TEXT NOT NULL,
-    "copies" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "publishedAt" TIMESTAMP(3) NOT NULL,
     "tags" TEXT[],
+    "copies" INTEGER,
 
     CONSTRAINT "Book_pkey" PRIMARY KEY ("id")
 );
@@ -42,6 +42,7 @@ CREATE TABLE "Rating" (
     "bookId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "score" DOUBLE PRECISION NOT NULL,
+    "ratingDate" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Rating_pkey" PRIMARY KEY ("id")
 );

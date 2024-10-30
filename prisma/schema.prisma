@@ -34,6 +34,7 @@ model Book {
   price       Float
   publishedAt DateTime
   tags        String[]
+  copies      Int?
 
   // Relations
   reviews     Review[]   @relation("BookReviews")

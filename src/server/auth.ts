@@ -14,6 +14,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
+      isAdmin: boolean;
       // ...other properties
       // role: UserRole;
     };
@@ -25,6 +26,13 @@ declare module "next-auth" {
   // }
 }
 
+const AdminEmails = [
+  "example12@gmail.com",
+  "example123@gmail.com",
+
+  // Add more sample emails here if needed. 
+]
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -35,7 +43,8 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
+        token.email = user.email as string; // Type Assertion 
+        token.isAdmin = AdminEmails.includes(token.email)
       }
 
       return token;
@@ -43,6 +52,7 @@ export const authOptions: NextAuthOptions = {
     session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.user.isAdmin = token.isAdmin as boolean; // Checks for admin status
       }
 
       return session;

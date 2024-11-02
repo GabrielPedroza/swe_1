@@ -49,6 +49,35 @@ export const cartRouter = createTRPCRouter({
       return cartItem;
     }),
 
+  removeItem: protectedProcedure
+    .input(
+      z.object({
+        bookId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      const cart = await ctx.db.shoppingCart.findUnique({
+        where: { userId },
+      });
+
+      if (!cart) {
+        throw new Error("Cart not found");
+      }
+
+      await ctx.db.cartItem.delete({
+        where: {
+          cartId_bookId: {
+            cartId: cart.id,
+            bookId: input.bookId,
+          },
+        },
+      });
+
+      return { success: true };
+    }),
+
   getCart: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
 

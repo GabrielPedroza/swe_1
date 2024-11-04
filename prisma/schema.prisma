@@ -29,13 +29,15 @@ model User {
 
 model Book {
   id          String     @id @default(cuid())
+  isbn        String
   title       String
   author      String
+  publisher   String
   genre       String
   price       Float
-  publishedAt DateTime?
+  publishedAt DateTime? @default(now())
   tags        String[]
-  description String
+  description String?
 
   // Relations
   reviews     Review[]   @relation("BookReviews")

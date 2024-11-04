@@ -4,18 +4,20 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 
 const CreateBookPage = () => {
+    const [isbn, setIsbn] = useState('');
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
+    const [publisher, setPublisher] = useState('')
     const [description, setDescription] = useState('');
     const [genre, setGenre] = useState('');
-    const [price, setPrice] = useState<number | ''>(''); // Adjust type for price
-    const [publishedAt, setPublishedAt] = useState<Date | null>(null); // Adjust for date input
+    const [price, setPrice] = useState<number | ''>(''); 
+    const [publishedAt, setPublishedAt] = useState<Date | null>(null);
     const [error, setError] = useState('');
     const router = useRouter();
   
     const createBook = api.book.createBook.useMutation({
       onSuccess: () => {
-        router.push('/admin'); 
+        void router.push('/admin'); 
       },
       onError: (error) => {
         setError(error.message);
@@ -36,8 +38,16 @@ const CreateBookPage = () => {
         setError('You must be logged in to create a book.');
         return;
       }
-  
-      // FIXME: createBook.mutate({ title, author, description, genre, price: Number(price), publishedAt });
+      
+      const publishedDate = publishedAt ?? new Date();
+      createBook.mutate({ 
+        title, 
+        author, 
+        description, 
+        genre, 
+        price: Number(price), 
+        publishedAt: new Date()
+       });
     };
   
    // return ();

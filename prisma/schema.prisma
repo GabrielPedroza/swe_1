@@ -38,6 +38,7 @@ model Book {
   publishedAt DateTime? @default(now())
   tags        String[]
   description String?
+  copies      Int?
 
   // Relations
   reviews     Review[]   @relation("BookReviews")
@@ -68,6 +69,7 @@ model Rating {
   bookId    String
   userId    String
   score     Float
+  ratingDate DateTime
 
   // Relations
   book      Book     @relation("BookRatings", fields: [bookId], references: [id], onDelete: Cascade)

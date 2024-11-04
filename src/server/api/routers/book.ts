@@ -9,8 +9,10 @@ export const booksRouter = createTRPCRouter({
         limit: z.number().min(1).max(100).default(10),
         filters: z
           .object({
+            isbn: z.string().optional(),
             title: z.string().optional(),
             author: z.string().optional(),
+            publisher: z.string().optional(),
             genre: z.string().optional(),
             priceMin: z.number().optional(),
             priceMax: z.number().optional(),
@@ -60,20 +62,24 @@ export const booksRouter = createTRPCRouter({
   createBook: protectedProcedure
     .input(
       z.object({
+        isbn: z.string().min(1, "isbn is required"),
         title: z.string().min(1, "Title is required"),
         author: z.string().min(1, "Author is required"),
+        publisher: z.string().min(1),
         genre: z.string().min(1, "Genre is required"),
         description: z.string().min(1, "Description is required"),
         price: z.number().min(1, "Price is required"),
         tags: array(z.string()).optional(),
-        publishedAt: z.date()
+        publishedAt: z.date().optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
       const newBook = await ctx.db.book.create({
         data: {
+          isbn: input.isbn,
           title: input.title,
           author: input.author,
+          publisher: input.publisher,
           genre: input.genre,
           description: input.description,
           price: input.price,

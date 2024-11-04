@@ -41,8 +41,10 @@ const CreateBookPage = () => {
       
       const publishedDate = publishedAt ?? new Date();
       createBook.mutate({ 
+        isbn,
         title, 
         author, 
+        publisher,
         description, 
         genre, 
         price: Number(price), 

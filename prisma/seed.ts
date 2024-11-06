@@ -17,6 +17,7 @@ async function main() {
       price: 10.99,
       publishedAt: new Date("1925-04-10"),
       tags: ["classic", "novel"],
+      isbn: "9780743273565",
     },
     {
       id: "2",
@@ -27,6 +28,7 @@ async function main() {
       price: 8.99,
       publishedAt: new Date("1949-06-08"),
       tags: ["classic", "political", "novel"],
+      isbn: "9780451524935",
     },
     {
       id: "3",
@@ -37,6 +39,7 @@ async function main() {
       price: 7.99,
       publishedAt: new Date("1960-07-11"),
       tags: ["classic", "novel"],
+      isbn: "9780061120084",
     },
     {
       id: "4",
@@ -47,6 +50,7 @@ async function main() {
       price: 6.99,
       publishedAt: new Date("1813-01-28"),
       tags: ["classic", "romance", "novel"],
+      isbn: "9781503290563",
     },
     {
       id: "5",
@@ -57,6 +61,7 @@ async function main() {
       price: 12.99,
       publishedAt: new Date("1937-09-21"),
       tags: ["fantasy", "adventure", "classic"],
+      isbn: "9780345339683",
     },
     {
       id: "6",
@@ -67,6 +72,7 @@ async function main() {
       price: 9.99,
       publishedAt: new Date("1851-10-18"),
       tags: ["classic", "adventure", "novel"],
+      isbn: "9781503280786",
     },
     {
       id: "7",
@@ -77,6 +83,7 @@ async function main() {
       price: 14.99,
       publishedAt: new Date("1869-01-01"),
       tags: ["classic", "historical", "novel"],
+      isbn: "9780199232765",
     },
     {
       id: "8",
@@ -87,6 +94,7 @@ async function main() {
       price: 8.49,
       publishedAt: new Date("1951-07-16"),
       tags: ["classic", "novel"],
+      isbn: "9780316769488",
     },
     {
       id: "9",
@@ -97,6 +105,7 @@ async function main() {
       price: 9.49,
       publishedAt: new Date("1932-08-30"),
       tags: ["dystopian", "classic", "novel"],
+      isbn: "9780060850524",
     },
     {
       id: "10",
@@ -107,6 +116,7 @@ async function main() {
       price: 25.99,
       publishedAt: new Date("1954-07-29"),
       tags: ["fantasy", "epic", "adventure"],
+      isbn: "9780544003415",
     },
     {
       id: "11",
@@ -117,6 +127,7 @@ async function main() {
       price: 7.49,
       publishedAt: new Date("1847-10-16"),
       tags: ["classic", "romance", "novel"],
+      isbn: "9780141441146",
     },
     {
       id: "12",
@@ -127,6 +138,7 @@ async function main() {
       price: 11.99,
       publishedAt: new Date("1866-01-01"),
       tags: ["classic", "psychological", "novel"],
+      isbn: "9780486415871",
     },
     {
       id: "13",
@@ -137,6 +149,7 @@ async function main() {
       price: 10.49,
       publishedAt: new Date("1988-05-01"),
       tags: ["fiction", "philosophical", "novel"],
+      isbn: "9780061122415",
     },
     {
       id: "14",
@@ -147,6 +160,7 @@ async function main() {
       price: 8.99,
       publishedAt: new Date("1997-06-26"),
       tags: ["fantasy", "young adult", "novel"],
+      isbn: "9780590353427",
     },
     {
       id: "15",
@@ -157,6 +171,7 @@ async function main() {
       price: 9.99,
       publishedAt: new Date("2003-05-29"),
       tags: ["drama", "classic", "novel"],
+      isbn: "9781594480003",
     },
     {
       id: "16",
@@ -167,6 +182,7 @@ async function main() {
       price: 7.99,
       publishedAt: new Date("2003-04-03"),
       tags: ["mystery", "thriller", "novel"],
+      isbn: "9780307474278",
     },
     {
       id: "17",
@@ -177,6 +193,7 @@ async function main() {
       price: 19.99,
       publishedAt: new Date("1956-10-16"),
       tags: ["fantasy", "children", "classic"],
+      isbn: "9780064471190",
     },
     {
       id: "18",
@@ -187,6 +204,7 @@ async function main() {
       price: 13.99,
       publishedAt: new Date("1862-01-01"),
       tags: ["classic", "historical", "novel"],
+      isbn: "9780451419439",
     },
     {
       id: "19",
@@ -197,6 +215,7 @@ async function main() {
       price: 5.99,
       publishedAt: new Date("1943-04-06"),
       tags: ["classic", "children", "novel"],
+      isbn: "9780156012195",
     },
     {
       id: "20",
@@ -207,6 +226,7 @@ async function main() {
       price: 9.49,
       publishedAt: new Date("1977-01-28"),
       tags: ["horror", "thriller", "novel"],
+      isbn: "9780307743657",
     },
     {
       id: "21",
@@ -217,6 +237,7 @@ async function main() {
       price: 12.49,
       publishedAt: new Date("1936-06-30"),
       tags: ["classic", "historical", "romance"],
+      isbn: "9781451635621",
     },
     {
       id: "22",
@@ -227,6 +248,7 @@ async function main() {
       price: 9.24,
       publishedAt: new Date("1899-04-01"),
       tags: ["psychological", "novella", "roman a clef"],
+      isbn: "9781503275928",
     },
     {
       id: "23",
@@ -237,6 +259,7 @@ async function main() {
       price: 13.92,
       publishedAt: new Date("1899-04-01"),
       tags: ["romance", "fiction", "anthology"],
+      isbn: "9780140424386",
     },
     {
       id: "24",
@@ -247,8 +270,9 @@ async function main() {
       price: 9.99,
       publishedAt: new Date("1897-05-26"),
       tags: ["gothic", "fiction", "fantasy"],
+      isbn: "9780141439846",
     },
-  ];
+];
 
   const users = [
     {
@@ -451,6 +475,7 @@ main()
     console.error("Error inserting books:", e);
     process.exit(1);
   })
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   .finally(async () => {
     await prisma.$disconnect();
   });

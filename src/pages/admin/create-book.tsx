@@ -51,6 +51,25 @@ const CreateBookPage = () => {
         publishedAt: new Date()
        });
     };
-  
-   // return ();
-}
+
+    return (
+      <form onSubmit={handleSubmit}>
+        {}
+        <input value={isbn} onChange={(e) => setIsbn(e.target.value)} placeholder="ISBN" />
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+        <input value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Author" />
+        <input value={publisher} onChange={(e) => setPublisher(e.target.value)} placeholder="Publisher" />
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
+        <input value={genre} onChange={(e) => setGenre(e.target.value)} placeholder="Genre" />
+        <input 
+          value={price} 
+          onChange={(e) => setPrice(Number(e.target.value))} 
+          placeholder="Price" 
+          type="number" 
+        />
+        <input type="date" onChange={(e) => setPublishedAt(new Date(e.target.value))} />
+        <button type="submit">Create Book</button>
+        {error && <p>{error}</p>}
+      </form>
+    );
+};

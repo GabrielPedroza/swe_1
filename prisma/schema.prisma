@@ -32,7 +32,7 @@ model Book {
   isbn        String
   title       String
   author      String
-  publisher   String
+  publisher   String?
   genre       String
   price       Float
   publishedAt DateTime? @default(now())

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { EyeIcon } from "@heroicons/react/24/outline";
 
-const Dashboard = () => {
+  const Dashboard = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 

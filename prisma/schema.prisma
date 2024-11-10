@@ -14,15 +14,11 @@ model User {
   emailVerified DateTime?
   password      String
   image         String?
-
-  // Relations
-  reviews       Review[]      @relation("UserReviews")
+  creditCards   CreditCard[]
   ratings       Rating[]      @relation("UserRatings")
+  reviews       Review[]      @relation("UserReviews")
   shoppingCart  ShoppingCart?
-  creditCards    CreditCard[] // Relation to CreditCard
 
-
-  // Indexes
   @@index([username])
 }
 
@@ -35,41 +31,34 @@ model Book {
   publishedAt DateTime
   tags        String[]
   copies      Int?
-
-  // Relations
-  reviews     Review[]   @relation("BookReviews")
   ratings     Rating[]   @relation("BookRatings")
+  reviews     Review[]   @relation("BookReviews")
   cartItems   CartItem[]
 
-  // Indexes
   @@index([title, author])
 }
 
 model Review {
-  id          String   @id @default(cuid())
-  bookId      String
-  userId      String
-  content     String
-  score       Float
-  reviewDate  DateTime
-
-  // Relations
-  book        Book     @relation("BookReviews", fields: [bookId], references: [id], onDelete: Cascade)
-  user        User     @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  bookId     String
+  userId     String
+  content    String
+  score      Float
+  reviewDate DateTime
+  book       Book     @relation("BookReviews", fields: [bookId], references: [id], onDelete: Cascade)
+  user       User     @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, userId])
 }
 
 model Rating {
-  id        String   @id @default(cuid())
-  bookId    String
-  userId    String
-  score     Float
+  id         String   @id @default(cuid())
+  bookId     String
+  userId     String
+  score      Float
   ratingDate DateTime
-
-  // Relations
-  book      Book     @relation("BookRatings", fields: [bookId], references: [id], onDelete: Cascade)
-  user      User     @relation("UserRatings", fields: [userId], references: [id], onDelete: Cascade)
+  book       Book     @relation("BookRatings", fields: [bookId], references: [id], onDelete: Cascade)
+  user       User     @relation("UserRatings", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, userId])
 }
@@ -79,24 +68,20 @@ model ShoppingCart {
   userId    String     @unique
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-
-  // Relations
-  user      User       @relation(fields: [userId], references: [id])
   items     CartItem[]
+  user      User       @relation(fields: [userId], references: [id])
 
   @@map("shopping_carts")
 }
 
 model CartItem {
-  id          String        @id @default(cuid())
-  cartId      String
-  bookId      String
-  quantity    Int           @default(1)
-  addedAt     DateTime      @default(now())
-
-  // Relations
-  cart        ShoppingCart  @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  book        Book          @relation(fields: [bookId], references: [id])
+  id       String       @id @default(cuid())
+  cartId   String
+  bookId   String
+  quantity Int          @default(1)
+  addedAt  DateTime     @default(now())
+  book     Book         @relation(fields: [bookId], references: [id])
+  cart     ShoppingCart @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   @@unique([cartId, bookId])
   @@map("cart_items")
@@ -104,11 +89,11 @@ model CartItem {
 
 model CreditCard {
   id             String   @id @default(uuid())
-  user           User     @relation(fields: [userId], references: [id])
   userId         String
-  cardNumber     String   @db.VarChar(16) // For fake data, storing full number is acceptable
+  cardNumber     String   @db.VarChar(16)
   cardHolderName String
   expirationDate DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id])
 }

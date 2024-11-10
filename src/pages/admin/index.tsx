@@ -80,7 +80,7 @@ const AdminPage = () => {
 
   return (
     <div className="space-y-4">
-      {/* Action Selection */}
+      {/* Menu for buttons */}
       <div>
         <button
           onClick={() => setAction('createBook')}
@@ -96,7 +96,7 @@ const AdminPage = () => {
         </button>
       </div>
 
-      {/* Conditional Rendering of Forms */}
+      {/* Button for createBook */}
       {action === 'createBook' && (
         <form onSubmit={handleBookSubmit} className="space-y-4">
           <input
@@ -160,7 +160,7 @@ const AdminPage = () => {
           </button>
         </form>
       )}
-
+      {/* Button for creating an author */}
       {action === 'createAuthor' && (
         <form onSubmit={handleAuthorSubmit} className="space-y-4">
           <input

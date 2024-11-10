@@ -10,10 +10,11 @@ datasource db {
 model User {
   id            String        @id @default(cuid())
   username      String        @unique
-  email         String?       @unique
+  email         String       @unique
   emailVerified DateTime?
   password      String
   image         String?
+  isAdmin       Boolean @default(false)
 
   // Relations
   reviews       Review[]      @relation("UserReviews")
@@ -28,12 +29,15 @@ model User {
 
 model Book {
   id          String     @id @default(cuid())
+  isbn        String
   title       String
   author      String
+  publisher   String?
   genre       String
   price       Float
-  publishedAt DateTime
+  publishedAt DateTime? @default(now())
   tags        String[]
+  description String?
   copies      Int?
 
   // Relations

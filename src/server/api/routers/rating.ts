@@ -15,13 +15,13 @@ export const ratingRouter = createTRPCRouter({
       bookId: z.string(),
     }),
   )
-  .mutation(async ({ input }) => {
+  .mutation(async ({ ctx, input }) => {
     const { rating, userId, bookId } = input;
-    const userFound = await prisma.user.findUnique({
+    const userFound = await ctx.db.user.findUnique({
       where: { id: userId },
     });
   if(!userFound) throw new Error("User not found");
-  const newRating = await prisma.rating.create({
+  const newRating = await ctx.db.rating.create({
     data: {
       score: rating,
       user: { connect: { id: userId}},
@@ -38,9 +38,9 @@ getAverageRating: publicProcedure
       bookId: z.string(),
     }),
   )
-  .query(async ({ input }) => {
+  .query(async ({ ctx, input }) => {
     const { bookId } = input;
-    const averageRating = await prisma.rating.aggregate({
+    const averageRating = await ctx.db.rating.aggregate({
       where: { bookId },
       _avg: { score: true},
     });

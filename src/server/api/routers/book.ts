@@ -22,8 +22,42 @@ export const booksRouter = createTRPCRouter({
           .optional(),
       }),
     )
-    .query(async ({ ctx }) => {
-      return await ctx.db.book.findMany();
+    .query(async ({ ctx, input }) => {
+      const { page, limit, filters } = input;
+      const where: any = {};
+
+      if (filters) {
+        if (filters.isbn) where.isbn = filters.isbn;
+        if (filters.title)
+          where.title = { contains: filters.title, mode: "insensitive" };
+        if (filters.author)
+          where.author = { contains: filters.author, mode: "insensitive" };
+        if (filters.publisher)
+          where.publisher = {
+            contains: filters.publisher,
+            mode: "insensitive",
+          };
+        if (filters.genre)
+          where.genre = { contains: filters.genre, mode: "insensitive" };
+        if (filters.priceMin !== undefined || filters.priceMax !== undefined) {
+          where.price = {};
+          if (filters.priceMin !== undefined)
+            where.price.gte = filters.priceMin;
+          if (filters.priceMax !== undefined)
+            where.price.lte = filters.priceMax;
+        }
+        if (filters.publishedAt) where.publishedAt = filters.publishedAt;
+        if (filters.tags && filters.tags.length > 0)
+          where.tags = { hasSome: filters.tags };
+      }
+
+      const books = await ctx.db.book.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      return books;
     }),
   getBookById: protectedProcedure
     .input(
@@ -70,8 +104,8 @@ export const booksRouter = createTRPCRouter({
         description: z.string().min(1, "Description is required"),
         price: z.number().min(1, "Price is required"),
         tags: array(z.string()).optional(),
-        publishedAt: z.date().optional()
-      })
+        publishedAt: z.date().optional(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const newBook = await ctx.db.book.create({

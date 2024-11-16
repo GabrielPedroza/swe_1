@@ -31,9 +31,13 @@ model Book {
   title       String
   author      String
   genre       String
+  copies      Int
   price       Float
   publishedAt DateTime
   tags        String[]
+  publisher   String
+  rating      Float
+  discount    Float     
 
   // Relations
   reviews     Review[]   @relation("BookReviews")
@@ -64,6 +68,7 @@ model Rating {
   bookId    String
   userId    String
   score     Float
+  ratingDate DateTime
 
   // Relations
   book      Book     @relation("BookRatings", fields: [bookId], references: [id], onDelete: Cascade)

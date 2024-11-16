@@ -78,6 +78,39 @@ export const cartRouter = createTRPCRouter({
       return { success: true };
     }),
 
+  updateItem: protectedProcedure
+    .input(
+      z.object({
+        bookId: z.string(),
+        quantity: z.number().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      const cart = await ctx.db.shoppingCart.findUnique({
+        where: { userId },
+      });
+
+      if (!cart) {
+        throw new Error("Cart not found");
+      }
+
+      const cartItem = await ctx.db.cartItem.update({
+        where: {
+          cartId_bookId: {
+            cartId: cart.id,
+            bookId: input.bookId,
+          },
+        },
+        data: {
+          quantity: input.quantity,
+        },
+      });
+
+      return cartItem;
+    }),
+
   getCart: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
 
@@ -93,5 +126,24 @@ export const cartRouter = createTRPCRouter({
     });
 
     return cart;
+  }),
+  clearCart: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    const cart = await ctx.db.shoppingCart.findUnique({
+      where: { userId },
+    });
+
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    await ctx.db.cartItem.deleteMany({
+      where: {
+        cartId: cart.id,
+      },
+    });
+
+    return { success: true };
   }),
 });

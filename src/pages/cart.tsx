@@ -1,3 +1,4 @@
+// components/ShoppingCart.tsx
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
@@ -24,6 +25,27 @@ const ShoppingCart: React.FC = () => {
     },
   });
 
+  const updateItemMutation = api.cart.updateItem.useMutation({
+    onSuccess: () => {
+      utils.cart.getCart.invalidate();
+    },
+  });
+
+  const clearCartMutation = api.cart.clearCart.useMutation({
+    onSuccess: () => {
+      utils.cart.getCart.invalidate();
+      router.push("/dashboard");
+    },
+    onError: (error) => {
+      console.error("Failed to complete checkout:", error);
+      alert("Failed to complete checkout. Please try again.");
+    },
+  });
+
+  const handleCompleteCheckout = () => {
+    clearCartMutation.mutate();
+  };
+
   if (!session?.user) {
     router.push("/login")
     return null;
@@ -49,6 +71,10 @@ const ShoppingCart: React.FC = () => {
 
   const handleRemoveItem = (bookId: string) => {
     removeItemMutation.mutate({ bookId });
+  };
+
+  const handleUpdateQuantity = (bookId: string, quantity: number) => {
+    updateItemMutation.mutate({ bookId, quantity });
   };
 
   const totalPrice = cart?.items.reduce(
@@ -94,6 +120,12 @@ const ShoppingCart: React.FC = () => {
                       type="number"
                       min="1"
                       value={item.quantity}
+                      onChange={(e) =>
+                        handleUpdateQuantity(
+                          item.bookId,
+                          Number(e.target.value),
+                        )
+                      }
                       className="w-16 rounded border border-gray-300 px-2 py-1"
                     />
                   </td>
@@ -119,9 +151,13 @@ const ShoppingCart: React.FC = () => {
           </div>
           <div className="mt-6 flex justify-end space-x-4">
             <Button
+              onClick={handleCompleteCheckout}
               className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+              disabled={clearCartMutation.isPending}
             >
-              Checkout
+              {clearCartMutation.isPending
+                ? "Completing..."
+                : "Complete Checkout"}
             </Button>
           </div>
         </>

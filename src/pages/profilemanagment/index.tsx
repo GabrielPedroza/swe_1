@@ -83,9 +83,9 @@ const UserPage = () => {
   // UI with buttons for each API
   return (
     <div className="p-4">
-      <h1 className="text-lg font-bold mb-4">User Page</h1>
+      <h1 className="text-4xl font-bold text-center mb-4">Profile Managment Page</h1>
 
-      <div className="space-y-2">
+      <div className="flex justify-center space-x-4">
         <button
           onClick={handleCreateUser}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -95,14 +95,14 @@ const UserPage = () => {
 
         <button
           onClick={handleGetUser}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 "
         >
           Get User
         </button>
 
         <button
           onClick={handleUpdateUser}
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 "
         >
           Update User
         </button>

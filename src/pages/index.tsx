@@ -7,9 +7,6 @@ export default function Home() {
   const createResponse = api.post.create.useMutation({
   });
 
-  // remember that you can't run this function with the same input (like username) because it needs to be unique. it will give u an error saying its not unique or something
-  // u can use `npx prisma studio` to see what is in the db and then see if it was added or not. u can also see in the chrome console and in the terminal of ur vscode
-  // make sure u add the signin page and then reference what nahar has in his branch
   const handleClick = () => {
     createResponse.mutate({
       username: 'gabriel',

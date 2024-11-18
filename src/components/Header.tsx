@@ -41,6 +41,14 @@ const Header: React.FC = () => {
     signOut({ callbackUrl: "/signin" });
   };
 
+  const handleRatingClick = () => {
+    router.push("/rating");
+  }
+
+  const handleCommentClick = () => {
+    router.push("/comment");
+  }
+
   return (
     <header className="bg-gray-800 py-4 text-white">
       <div className="container flex min-w-full items-center justify-between px-4">
@@ -61,6 +69,24 @@ const Header: React.FC = () => {
               className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600"
             >
               Dashboard
+            </Button>
+          )}
+
+          {session?.user && (
+            <Button
+              onClick={handleRatingClick}
+              className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600"
+              >
+                Ratings
+            </Button>
+          )}
+
+          {session?.user && (
+            <Button
+              onClick={handleCommentClick}
+              className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600"
+              >
+                Comments
             </Button>
           )}
 
@@ -100,6 +126,7 @@ const Header: React.FC = () => {
             </Button>
           )}
 
+
           {/* Login / Logout */}
           {status === "loading" ? null : session?.user ? (
             <Button
@@ -116,6 +143,7 @@ const Header: React.FC = () => {
               Login
             </Button>
           )}
+          
         </div>
       </div>
     </header>

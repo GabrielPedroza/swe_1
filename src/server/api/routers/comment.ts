@@ -2,33 +2,33 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import bcrypt from "bcrypt";
 
-export const ratingRouter = createTRPCRouter({
-  createRating: publicProcedure
+export const commentRouter = createTRPCRouter({
+  createComment: publicProcedure
   .input(
     z.object({
-      rating: z.number().int().min(1).max(5),
+      content: z.string(),
       userId: z.string(),
       bookId: z.string(),
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    const { rating, userId, bookId } = input;
+    const { content, userId, bookId } = input;
     const userFound = await ctx.db.user.findUnique({
       where: { id: userId },
     });
   if(!userFound) throw new Error("User not found");
-  const newRating = await ctx.db.rating.create({
+  const newComment = await ctx.db.review.create({
     data: {
-      score: rating,
+      content,
       user: { connect: { id: userId}},
       book: { connect: { id: bookId }},
-      ratingDate: new Date(),
+      reviewDate: new Date(),
     },
   });
-  return newRating;
+  return newComment;
 }),
 
-getAverageRating: publicProcedure
+getCommentList: publicProcedure
   .input(
     z.object({
       bookId: z.string(),
@@ -37,11 +37,14 @@ getAverageRating: publicProcedure
   .query(async ({ ctx, input }) => {
     const { bookId } = input;
     console.log("got bookId: ", bookId);
-    const averageRating = await ctx.db.rating.aggregate({
+    const commentList = await ctx.db.review.findMany({
       where: { bookId },
-      _avg: { score: true},
+      include: {
+        user:{
+          select: { id: true, username: true}
+        },
+      },
     });
-    const truncatedAvg = Math.floor((averageRating._avg.score || 0) * 100) / 100;
-    return { averageRating: truncatedAvg };
+    return { commentList };
   }),
 });

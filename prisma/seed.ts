@@ -283,7 +283,6 @@ async function main() {
       bookId: "1",
       userId: "142547",
       content: "Amazing read.",
-      score: 4.00,
       reviewDate: new Date("2024-01-07"),
     },
     {
@@ -291,7 +290,6 @@ async function main() {
       bookId: "2",
       userId: "253281",
       content: "Thrilling and entertaining.",
-      score: 3.00,
       reviewDate: new Date("2024-06-10"),
     },
     {
@@ -299,7 +297,6 @@ async function main() {
       bookId: "3",
       userId: "836273",
       content: "Well written and thought provoking.",
-      score: 4.00,
       reviewDate: new Date("2024-05-17"),
     },
   ];

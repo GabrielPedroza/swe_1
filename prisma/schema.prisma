@@ -43,7 +43,6 @@ model Review {
   bookId     String
   userId     String
   content    String
-  score      Float
   reviewDate DateTime
   book       Book     @relation("BookReviews", fields: [bookId], references: [id], onDelete: Cascade)
   user       User     @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)

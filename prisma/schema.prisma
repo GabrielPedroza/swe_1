@@ -10,13 +10,16 @@ datasource db {
 model User {
   id            String        @id @default(cuid())
   username      String        @unique
-  email         String?       @unique
+  email         String       @unique
   emailVerified DateTime?
   password      String
   image         String?
   creditCards   CreditCard[]
-  ratings       Rating[]      @relation("UserRatings")
+  isAdmin       Boolean @default(false)
+
+  // Relations
   reviews       Review[]      @relation("UserReviews")
+  ratings       Rating[]      @relation("UserRatings")
   shoppingCart  ShoppingCart?
 
   @@index([username])
@@ -24,12 +27,15 @@ model User {
 
 model Book {
   id          String     @id @default(cuid())
+  isbn        String
   title       String
   author      String
+  publisher   String?
   genre       String
   price       Float
-  publishedAt DateTime
+  publishedAt DateTime? @default(now())
   tags        String[]
+  description String?
   copies      Int?
   ratings     Rating[]   @relation("BookRatings")
   reviews     Review[]   @relation("BookReviews")

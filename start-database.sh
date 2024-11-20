@@ -12,7 +12,7 @@
 DB_CONTAINER_NAME="swe_1-postgres"
 
 if ! [ -x "$(command -v docker)" ]; then
-  echo -e "Docker is not installed. Please install docker and try again.\nDocker install guide: https://docs.docker.com/engine/install/"
+  echo -e "Docker is not installed. install docker and try again.\nDocker install guide: https://docs.docker.com/engine/install/"
   exit 1
 fi
 

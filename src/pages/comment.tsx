@@ -47,6 +47,13 @@ useEffect(() => {
     }
 }, [session, router]);
 
+if(isLoadingBook){
+    return <p>Currently loading books. </p>;
+}
+
+if(isErrorBook){
+    return <p>An error occured while loading the books. </p>
+}
 
 const handleCreateComment = () => {
     if(!selectedBookId){
@@ -119,16 +126,17 @@ return (
         {selectedBookId && (
             <div className="mt-6">
                 <h3 className="text-lg font-semibold">Comment List</h3>
+                {isLoadingComments && <p>Currently loading list of comments. </p>}
+                {!isLoadingComments && isErrorComments && <p>Couldn't load the list of comments. </p>}
                 {commentList?.commentList.length ? (
                     commentList.commentList.map((comment) => (
                         <div key={comment.id}>
                             <p><strong>Posted By: </strong>{comment.user.username}</p>
+                            <p><strong>Date: </strong>{new Date(comment.reviewDate).toLocaleString()}</p>
                             <p>{comment.content}</p>
                         </div>
                     ))
-                ) : (
-                    <p>There are no comments for this book.</p>
-                )}
+                ) : null}
             </div>
         )}
     </div>

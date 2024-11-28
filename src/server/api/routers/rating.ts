@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import bcrypt from "bcrypt";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const ratingRouter = createTRPCRouter({
-  createRating: publicProcedure
+  createRating: protectedProcedure
   .input(
     z.object({
       rating: z.number().int().min(1).max(5),
@@ -28,7 +27,7 @@ export const ratingRouter = createTRPCRouter({
   return newRating;
 }),
 
-getAverageRating: publicProcedure
+  getAverageRating: protectedProcedure
   .input(
     z.object({
       bookId: z.string(),
@@ -43,5 +42,25 @@ getAverageRating: publicProcedure
     });
     const truncatedAvg = Math.floor((averageRating._avg.score || 0) * 100) / 100;
     return { averageRating: truncatedAvg };
+  }),
+
+  getRatingList: protectedProcedure
+  .input(
+    z.object({
+      bookId: z.string(),
+    }),
+  )
+  .query(async ({ ctx, input }) => {
+    const { bookId } = input;
+    console.log("got bookId: ", bookId);
+    const ratingList = await ctx.db.rating.findMany({
+      where: { bookId },
+      include: {
+        user:{
+          select: { id: true, username: true}
+        },
+      },
+    });
+    return { ratingList };
   }),
 });

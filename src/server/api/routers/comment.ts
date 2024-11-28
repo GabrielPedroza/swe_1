@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import bcrypt from "bcrypt";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
-  createComment: publicProcedure
+  createComment: protectedProcedure
   .input(
     z.object({
       content: z.string(),
@@ -28,7 +27,7 @@ export const commentRouter = createTRPCRouter({
   return newComment;
 }),
 
-getCommentList: publicProcedure
+  getCommentList: protectedProcedure
   .input(
     z.object({
       bookId: z.string(),

@@ -82,7 +82,7 @@ const Dashboard = () => {
                 </p>
                 <p className="text-gray-700">
                   <strong>Published At:</strong>{" "}
-                  {new Date(book.publishedAt).toLocaleDateString()}
+                  {book.publishedAt ? new Date(book.publishedAt).toLocaleDateString() : " "}
                 </p>
                 <p className="text-gray-700">
                   <strong>Tags:</strong> {book.tags.join(", ")}

@@ -31,10 +31,21 @@ const {
     { enabled: !!selectedBookId }
 );
 
+const {
+    data: ratingList,
+    isLoading: isLoadingRatings,
+    isError: isErrorRatings,
+    refetch: refetchRatingList
+} = api.rating.getRatingList.useQuery(
+    { bookId: selectedBookId as string },
+    { enabled: !!selectedBookId }
+);
+
 const createRatingMutation = api.rating.createRating.useMutation({
     onSuccess: () => {
         setSuccessMessage("Rating created successfully!");
         refetchAverageRating();
+        refetchRatingList();
     },
     onError: (error) => {
         setErrorMessage(error.message);
@@ -47,6 +58,13 @@ useEffect(() => {
     }
 }, [session, router]);
 
+if(isLoadingBook){
+    return <p>Currently loading books. </p>;
+}
+
+if(isErrorBook){
+    return <p>An error occured while loading the books. </p>
+}
 
 const handleCreateRating = () => {
     if(rating === null || rating < 1 || rating > 5){
@@ -125,11 +143,28 @@ return (
         {selectedBookId && (
             <div className="mt-6">
                 <h3 className="text-lg font-semibold">Average Rating</h3>
+                {isLoadingAverage && <p>Currently loading average rating. </p>}
+                {!isLoadingAverage && isErrorAverage && <p>Couldn't load the average rating.</p>}
                 {averageRating?.averageRating ? (
                     <p>{averageRating.averageRating.toFixed(2)} / 5</p>
-                ) : (
-                    <p>There are no ratings for this book.</p>
-                )}
+                ) : null}
+            </div>
+        )}
+
+        {selectedBookId && (
+            <div className="mt-6">
+                <h3 className="text-lg font-semibold">Rating List</h3>
+                {isLoadingRatings && <p>Currently loading list of ratings. </p>}
+                {!isLoadingRatings && isErrorRatings && <p>Couldn't load the list of ratings. </p>}
+                {ratingList?.ratingList.length ? (
+                    ratingList.ratingList.map((rating) => (
+                        <div key={rating.id}>
+                            <p><strong>Posted By: </strong>{rating.user.username}</p>
+                            <p><strong>Date: </strong>{new Date(rating.ratingDate).toLocaleString()}</p>
+                            <p>{rating.score}</p>
+                        </div>
+                    ))
+                ) : null}
             </div>
         )}
     </div>

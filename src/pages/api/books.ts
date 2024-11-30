@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 //Handler function
 export default async function handler(req: NextApiRequest, res: NextApiResponse) 
 {
-  //GET request to retrieve books based on genre, top sellers, or rating
+  //GET request to get books based on genre, top sellers, or rating
   if (req.method === 'GET') 
     {
     try 
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       //check if topSellers query parameter is set to true
       if (topSellers)
          {
-        //Retrieve the top 10 books that have sold the most copies
+        //get top 10 books with most copies
         const topBooks = await prisma.book.findMany({
           orderBy: {
             copies: 'desc',
@@ -25,14 +25,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           take: 10,
         });
 
-        // Send the list of top books as a JSON response with status 200 (OK)
+        //Send JSON response with status 200 
         res.status(200).json(topBooks); 
       }
       
       //check if rating query parameter is set
       else if (rating)
          {
-        // Retrieve books with rating higher or equal to the passed rating value
+        //get books with rating higher
         const ratedBooks = await prisma.book.findMany({
           where: {
             rating: {
@@ -41,21 +41,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
         });
 
-        // Send the list of books as a JSON response with status 200 (OK)
+        //Send JSON response with status 200 
         res.status(200).json(ratedBooks); 
       } else 
       {
-        // Retrieve books based on genre
+        //get books based on genre
         const books = await prisma.book.findMany({
           where: genre ? { genre: genre as string } : undefined,
         });
 
-        // Send the list of books as a JSON response with status 200 (OK)
+
+        //Send JSON response with status 200 
         res.status(200).json(books); 
       }
 
     } 
-    //Catch any errors and send a 500 (Internal Server Error) response
+    //error cathcer
     catch (error) 
     {
       res.status(500).json({ error: 'Internal Server Error' });
@@ -63,22 +64,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } 
   
   //PUT or PATCH request to update the price of books based on publisher
+  //This will update the price on the database
   else if (req.method === 'PUT' || req.method === 'PATCH') 
     {
       //Check if the request body is empty
     try 
     {
-      //Check if the request body is empty
+     
       const { discountPercent, publisher } = req.body;
 
       //Check if discountPercent and publisher are provided
       if (!discountPercent || !publisher) 
         {
-          //Send a 400 (Bad Request) response with an error message
+          //Bad request response
         return res.status(400).json({ error: 'Discount percent and publisher are required' });
       }
 
-      //Parse the discount percentage to a float
+      //change the discount percentage to a float
       const discount = parseFloat(discountPercent as string) / 100;
 
       //Update the price of books based on the publisher
@@ -90,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           price: {
             multiply: 1 - discount,
           },
-          //Update the discount field
+          //Update discount
           discount: discount * 100, 
         },
       });
@@ -107,7 +109,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   else 
   {
-    //Send a 405 (Method Not Allowed) response with the allowed methods
+    //Send Method Not Allowed response
     res.setHeader('Allow', ['GET', 'PUT', 'PATCH']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }

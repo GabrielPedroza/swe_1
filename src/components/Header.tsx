@@ -3,6 +3,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import Button from "./Button";
+import Link from "next/link";
 
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
@@ -87,6 +88,17 @@ const Header: React.FC = () => {
               className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600"
               >
                 Comments
+            </Button>
+          )}
+
+          {session?.user && (
+            <Button
+              // onClick={handleCommentClick}
+              className="rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600"
+              >
+                <Link href={`/user/${session.user.id}`}>
+                  Profile
+                </Link>
             </Button>
           )}
 

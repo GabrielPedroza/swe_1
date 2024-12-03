@@ -1,5 +1,3 @@
-// pages/dashboard.tsx
-
 import React, { useState } from "react";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
@@ -8,12 +6,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import FilterForm from "~/components/form/FilterForm";
+import { Dialog } from "@reach/dialog";
+import "@reach/dialog/styles.css";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   const [filters, setFilters] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
 
   const {
     data: books,
@@ -25,7 +27,13 @@ const Dashboard = () => {
     filters: filters,
   });
 
-  const addItemMutation = api.cart.addItem.useMutation({
+  const {
+    data: wishlists,
+    isLoading: isWishlistsLoading,
+    isError: isWishlistsError,
+  } = api.wishlists.getUserWishlists.useQuery();
+
+  const addItemToCartMutation = api.cart.addItem.useMutation({
     onSuccess: () => {
       alert("Book added to cart!");
     },
@@ -34,12 +42,32 @@ const Dashboard = () => {
     },
   });
 
+  const addToWishlistMutation = api.wishlists.addToWishlist.useMutation({
+    onSuccess: () => {
+      alert("Book added to wishlist!");
+      setIsModalOpen(false);
+    },
+    onError: (error) => {
+      alert(`Failed to add book to wishlist: ${error.message}`);
+    },
+  });
+
   const handleAddToCart = (bookId: string) => {
     if (!session?.user) {
       router.push("/login");
       return;
     }
-    addItemMutation.mutate({ bookId });
+    addItemToCartMutation.mutate({ bookId });
+  };
+
+  const handleAddToWishlist = (bookId: string) => {
+    setSelectedBookId(bookId);
+    setIsModalOpen(true);
+  };
+
+  const handleAddBookToWishlist = (wishlistId: string) => {
+    if (!selectedBookId) return;
+    addToWishlistMutation.mutate({ wishlistId, bookId: selectedBookId });
   };
 
   if (status === "loading") {
@@ -82,7 +110,9 @@ const Dashboard = () => {
                 </p>
                 <p className="text-gray-700">
                   <strong>Published At:</strong>{" "}
-                  {book.publishedAt ? new Date(book.publishedAt).toLocaleDateString() : " "}
+                  {book.publishedAt
+                    ? new Date(book.publishedAt).toLocaleDateString()
+                    : " "}
                 </p>
                 <p className="text-gray-700">
                   <strong>Tags:</strong> {book.tags.join(", ")}
@@ -92,7 +122,15 @@ const Dashboard = () => {
                     onClick={() => handleAddToCart(book.id)}
                     className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                   >
-                    {addItemMutation.isPending ? "Adding..." : "Add to Cart"}
+                    {addItemToCartMutation.isPending
+                      ? "Adding..."
+                      : "Add to Cart"}
+                  </Button>
+                  <Button
+                    onClick={() => handleAddToWishlist(book.id)}
+                    className="rounded-full bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                  >
+                    Add to Wishlist
                   </Button>
                   <Link
                     className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
@@ -108,6 +146,41 @@ const Dashboard = () => {
           <p className="text-gray-700">No books found.</p>
         )}
       </div>
+
+      {isModalOpen && (
+        <Dialog
+          onDismiss={() => setIsModalOpen(false)}
+          aria-labelledby="add-to-wishlist"
+        >
+          <h3 id="add-to-wishlist" className="text-lg font-semibold">
+            Add to Wishlist
+          </h3>
+          {isWishlistsLoading ? (
+            <p>Loading your wishlists...</p>
+          ) : isWishlistsError ? (
+            <p>Error loading wishlists.</p>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {wishlists && wishlists.length > 0 ? wishlists.map((wishlist) => (
+                <li key={wishlist.id}>
+                  <Button
+                    onClick={() => handleAddBookToWishlist(wishlist.id)}
+                    className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+                  >
+                    {wishlist.name}
+                  </Button>
+                </li>
+              )) : (<Link href={`/user/${session?.user.id}`}><Button>No wishlists? Create one now!</Button></Link>)}
+            </ul>
+          )}
+          <Button
+            onClick={() => setIsModalOpen(false)}
+            className="mt-4 rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
+          >
+            Cancel
+          </Button>
+        </Dialog>
+      )}
     </div>
   );
 };
